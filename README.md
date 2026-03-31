@@ -1,70 +1,37 @@
-# Getting Started with Create React App
+# Matching Memory Game
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## Page Flow
+Home → Instructions → Game Play → Score Board
+↑ (Next/Restart)
+↓ (Game Complete)
 
-## Available Scripts
+### Core Pages
+| Page Name | Type | Purpose |
+|-----------|------|---------|
+| `home` | Intro | **遊戲首頁**<br>自定義標題、開始遊戲 |
+| `instructions` | Info | 遊戲說明 |
+| `cards(matching/memory)` | **Main** | **記憶配對遊戲**<br>1-5位玩家輪流對戰 |
+| `scores` | Ending | **計分板**<br>按分數排序+獎盃 |
 
-In the project directory, you can run:
+### Game Flow (Multiplayer)
+1. **首頁** → 設定玩家數量 → **遊戲說明**
+2. **遊戲主畫面** → 輪流翻卡片 → **配對正確/錯誤動畫**
+3. 全部配對完成 → **計分板**
+4. **回首頁** / **重新開始**
 
-### `npm start`
+## 🎯 遊戲機制
+點擊卡片翻開 → 第二張卡片 → 判斷配對
+├── 成功：綠色 +1分 +音效 → Next按鈕 → 下一玩家
+└── 失敗：紅色 +音效 → (自動翻回) → 下一玩家
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+## 🛠️ Tech Stack
+- **React** + Hooks (useState/useEffect/useCallback)
+- **Public folder assets** (images/sounds)
+- **Dynamic grid layout** (自動適配卡牌數量)
+- **Responsive scaling** (1920x1080 → auto-fit)
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+## 🚀 Quick Start
+npm install
+npm start
 
-### `npm test`
-
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
-
-### `npm run build`
-
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
-
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
-
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+**Game designed for 1920x1080 full-screen play.**
