@@ -7,7 +7,7 @@
     <meta name="theme-color" content="#000000" />
     <meta
       name="description"
-      content="Web site created using create-react-app"
+      content="A matching game for ViewSonic"
     />
     <link rel="apple-touch-icon" href="%PUBLIC_URL%/logo192.png" />
     <!--
@@ -24,11 +24,359 @@
       work correctly both with client-side routing and a non-root public URL.
       Learn how to configure a non-root public URL by running `npm run build`.
     -->
-    <title>React App</title>
+    <title>Matching Game</title>
   </head>
   <body>
     <noscript>You need to enable JavaScript to run this app.</noscript>
     <div id="root"></div>
+    <script>
+      window.gameConfig = {
+        settings: {
+          gameMode: "memory" // 可切換為 "matching" 或 "memory"
+        },
+
+        // 文字字串（可換語系）
+        strings: {
+          matching:{
+            startTitle: {
+              text: "Matching",
+              style: {
+                "width": "1200px",
+                "height": "220px",
+                "position": "absolute",
+                "left": "20%",
+                "top": "27%",
+                "bottom":"",
+                "right":"",
+                "textAlign": "center",
+                "fontSize": "200px",
+                "fontFamily": "sans-serif",
+                "color": "",
+                "fontWeight": "900",
+                "fontStyle": "",
+                "textDecoration": "",
+                "backgroundColor":""
+              }
+            },
+            scoresTitle:{
+              text: "Scores",
+              style: {
+                "width": "855px",
+                "height": "",
+                "position": "absolute",
+                "left": "28%",
+                "top": "19%",
+                "bottom":"",
+                "right":"",
+                "textAlign": "center",
+                "fontSize": "45px",
+                "fontFamily": "sans-serif",
+                "color": "",
+                "fontWeight": "800",
+                "fontStyle": "",
+                "textDecoration": "",
+                "backgroundColor":""
+              }
+            },
+          },
+          memory:{
+            startTitle: {
+              text: "Memory",
+              style: {
+                "width": "1200px",
+                "height": "220px",
+                "position": "absolute",
+                "left": "20%",
+                "top": "27%",
+                "bottom":"",
+                "right":"",
+                "textAlign": "center",
+                "fontSize": "200px",
+                "fontFamily": "sans-serif",
+                "color": "",
+                "fontWeight": "900",
+                "fontStyle": "",
+                "textDecoration": "",
+                "backgroundColor":""
+              }
+            },
+            scoresTitle:{
+              text: "Scores",
+              style: {
+                "width": "855px",
+                "height": "",
+                "position": "absolute",
+                "left": "28%",
+                "top": "19%",
+                "bottom":"",
+                "right":"",
+                "textAlign": "center",
+                "fontSize": "45px",
+                "fontFamily": "sans-serif",
+                "color": "",
+                "fontWeight": "800",
+                "fontStyle": "",
+                "textDecoration": "",
+                "backgroundColor":""
+              }
+            },
+          }
+        },
+
+        players: {
+          matching:[
+            { id: 1, name: 'Player 1', score: 0, status: null },
+            { id: 2, name: 'Player 2', score: 0, status: null },
+            { id: 3, name: 'Player 3', score: 0, status: null },
+            { id: 4, name: 'Player 4', score: 0, status: null },
+            { id: 5, name: 'Player 5', score: 0, status: null },
+          ],
+          memory:[
+            { id: 1, name: 'Player 1', score: 0, status: null },
+            { id: 2, name: 'Player 2', score: 0, status: null },
+            { id: 3, name: 'Player 3', score: 0, status: null },
+            { id: 4, name: 'Player 4', score: 0, status: null },
+            { id: 5, name: 'Player 5', score: 0, status: null },
+          ],
+        },
+
+        sounds:{
+          matching:{
+            bgm:"./sounds/funny-cartoon-no-copyright-music.mp3",
+            correct:"./sounds/correct.mp3",
+            wrong:"./sounds/wrong.mp3",
+            congrats:"./sounds/congrat.mp3",
+            buttonClick:"./sounds/button-click.mp3"
+          },
+          memory:{
+            bgm:"./sounds/funny-cartoon-no-copyright-music.mp3",
+            correct:"./sounds/correct.mp3",
+            wrong:"./sounds/wrong.mp3",
+            congrats:"./sounds/congrat.mp3",
+            buttonClick:"./sounds/button-click.mp3"
+          }
+        },
+        
+        
+        // 圖片資源（依元件實際使用列出）
+        images:{
+          matching:{
+            // 背景
+            bgStart:"./images/background/doodle_matching_01_FHD.png",
+            bgInstructions:"./images/background/doodle_matching_02_FHD.png",
+            bgCards:"./images/background/doodle_matching_03_FHD.png",
+            bgScores:"./images/background/doodle_matching_06_FHD.png",
+
+            btnStart:"./images/object/doodle_matching_start_button.png",
+            btnNext:"./images/object/doodle_matching_next_button.png",
+            btnHome:"./images/object/doodle_matching_home_button.png",
+            btnAgain:"./images/object/doodle_matching_again_button.png",
+
+            trophy:"./images/object/doodle_matching_trophy.png",
+
+            // 玩家頭像（1~5)
+            finchPlayers: [
+              "./images/object/doodle_matching_finch_01.png",
+              "./images/object/doodle_matching_finch_02.png",
+              "./images/object/doodle_matching_finch_03.png",
+              "./images/object/doodle_matching_finch_04.png",
+              "./images/object/doodle_matching_finch_05.png",
+            ],
+          },
+          memory:{
+            // 背景
+            bgStart:"./images/background/doodle_memory_01_FHD.png",
+            bgInstructions:"./images/background/doodle_memory_02_FHD.png",
+            bgCards:"./images/background/doodle_memory_03_FHD.png",
+            bgScores:"./images/background/doodle_memory_06_FHD.png",
+
+            btnStart:"./images/object/doodle_memory_start_button.png",
+            btnNext:"./images/object/doodle_memory_next_button.png",
+            btnHome:"./images/object/doodle_memory_home_button.png",
+            btnAgain:"./images/object/doodle_memory_again_button.png",
+
+            trophy:"./images/object/doodle_memory_trophy.png",
+
+            // 玩家頭像（1~5)
+            finchPlayers: [
+              "./images/object/doodle_memory_finch_01.png",
+              "./images/object/doodle_memory_finch_02.png",
+              "./images/object/doodle_memory_finch_03.png",
+              "./images/object/doodle_memory_finch_04.png",
+              "./images/object/doodle_memory_finch_05.png",
+            ],
+          }
+        },
+
+        // 題庫
+        questions:{
+          matching:[
+            {
+              category: "category or null",
+              questions: [
+                {
+                  question: "sweater",
+                  answer: ["./images/cards/doodle_matching_sweater.png"],
+                  options: ["./images/cards/doodle_matching_sweater.png"],
+                  points: null, //若該題型不適用分數，則設為null
+                  type:"matching" //圖片配對題
+                },
+                {
+                  question: "coat",
+                  answer: ["./images/cards/doodle_matching_coat.png"],
+                  options: ["./images/cards/doodle_matching_coat.png"],
+                  points: null, //若該題型不適用分數，則設為null
+                  type:"matching" //圖片配對題
+                },
+                {
+                  question: "pants",
+                  answer: ["./images/cards/doodle_matching_pants.png"],
+                  options: ["./images/cards/doodle_matching_pants.png"],
+                  points: null, //若該題型不適用分數，則設為null
+                  type:"matching" //圖片配對題
+                },
+                {
+                  question: "scarf",
+                  answer: ["./images/cards/doodle_matching_scarf.png"],
+                  options: ["./images/cards/doodle_matching_scarf.png"],
+                  points: null, //若該題型不適用分數，則設為null
+                  type:"matching" //圖片配對題
+                },
+                {
+                  question: "rain boots",
+                  answer: ["./images/cards/doodle_matching_rain_boots.png"],
+                  options: ["./images/cards/doodle_matching_rain_boots.png"],
+                  points: null, //若該題型不適用分數，則設為null
+                  type:"matching" //圖片配對題
+                },
+                {
+                  question: "shirt",
+                  answer: ["./images/cards/doodle_matching_shirt.png"],
+                  options: ["./images/cards/doodle_matching_shirt.png"],
+                  points: null, //若該題型不適用分數，則設為null
+                  type:"matching" //圖片配對題
+                },
+                {
+                  question: "skirt",
+                  answer: ["./images/cards/doodle_matching_skirt.png"],
+                  options: ["./images/cards/doodle_matching_skirt.png"],
+                  points: null, //若該題型不適用分數，則設為null
+                  type:"matching" //圖片配對題
+                },
+                {
+                  question: "socks",
+                  answer: ["./images/cards/doodle_matching_socks.png"],
+                  options: ["./images/cards/doodle_matching_socks.png"],
+                  points: null, //若該題型不適用分數，則設為null
+                  type:"matching" //圖片配對題
+                },
+                {
+                  question: "vest",
+                  answer: ["./images/cards/doodle_matching_vest.png"],
+                  options: ["./images/cards/doodle_matching_vest.png"],
+                  points: null, //若該題型不適用分數，則設為null
+                  type:"matching" //圖片配對題
+                },
+              ]
+            }
+          ],
+          memory:[
+            {
+              category: "category or null",
+              questions: [
+                {
+                  question: "sweater",
+                  answer: ["./images/cards/doodle_memory_sweater.png"],
+                  options: ["./images/cards/doodle_memory_sweater.png"],
+                  points: null, //若該題型不適用分數，則設為null
+                  type:"memory" //圖片配對題
+                },
+                {
+                  question: "coat",
+                  answer: ["./images/cards/doodle_memory_coat.png"],
+                  options: ["./images/cards/doodle_memory_coat.png"],
+                  points: null, //若該題型不適用分數，則設為null
+                  type:"memory" //圖片配對題
+                },
+                {
+                  question: "pants",
+                  answer: ["./images/cards/doodle_memory_pants.png"],
+                  options: ["./images/cards/doodle_memory_pants.png"],
+                  points: null, //若該題型不適用分數，則設為null
+                  type:"memory" //圖片配對題
+                },
+                {
+                  question: "scarf",
+                  answer: ["./images/cards/doodle_memory_scarf.png"],
+                  options: ["./images/cards/doodle_memory_scarf.png"],
+                  points: null, //若該題型不適用分數，則設為null
+                  type:"memory" //圖片配對題
+                },
+                {
+                  question: "rain boots",
+                  answer: ["./images/cards/doodle_memory_rain_boots.png"],
+                  options: ["./images/cards/doodle_memory_rain_boots.png"],
+                  points: null, //若該題型不適用分數，則設為null
+                  type:"memory" //圖片配對題
+                },
+                {
+                  question: "shirt",
+                  answer: ["./images/cards/doodle_memory_shirt.png"],
+                  options: ["./images/cards/doodle_memory_shirt.png"],
+                  points: null, //若該題型不適用分數，則設為null
+                  type:"memory" //圖片配對題
+                },
+                {
+                  question: "skirt",
+                  answer: ["./images/cards/doodle_memory_skirt.png"],
+                  options: ["./images/cards/doodle_memory_skirt.png"],
+                  points: null, //若該題型不適用分數，則設為null
+                  type:"memory" //圖片配對題
+                },
+                {
+                  question: "socks",
+                  answer: ["./images/cards/doodle_memory_socks.png"],
+                  options: ["./images/cards/doodle_memory_socks.png"],
+                  points: null, //若該題型不適用分數，則設為null
+                  type:"memory" //圖片配對題
+                },
+                {
+                  question: "vest",
+                  answer: ["./images/cards/doodle_memory_vest.png"],
+                  options: ["./images/cards/doodle_memory_vest.png"],
+                  points: null, //若該題型不適用分數，則設為null
+                  type:"memory" //圖片配對題
+                },
+              ]
+            }
+          ],
+        },
+
+        assets: {
+          matching:[
+            {
+              "sceneId":1,
+              "text":"ABC",
+              "textWidth":"500px",
+              "textHeight":"200px",
+              "position":{
+                x:"40px",
+                y:"100px"
+              },
+              "textAlign":"center",
+              "fontSize":'104px',
+              "fontFamily": 'sans-serif',
+              "color": "rgb(61,101,153)",
+              "fontWeight": '600',
+              "fontStyle": 'italic',
+              "textDecoration": 'underline',
+            }
+          ],
+          memory:[]
+        }
+
+      };
+    </script>
     <!--
       This HTML file is a template.
       If you open it directly in the browser, you will see an empty page.

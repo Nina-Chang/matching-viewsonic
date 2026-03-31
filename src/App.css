@@ -1,38 +1,311 @@
-.App {
+body, html {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden; /* 防止滾動條出現 */
+  background-color: #000;
+  font-family: Arial, sans-serif;
+}
+
+.game-viewport {
+  width: 100vw;
+  height: 100vh;
+  position: absolute;
+  top: 0;
+  left: 0;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* --- 通用樣式 --- */
+.page-container {
+  width: 1920px;
+  height: 1080px;
+  position: relative;
+  background-size: cover;
+  background-position: center;
+  transform-origin: top left;
+  color: #000000;
+}
+
+.image-button{
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+}
+
+
+/* --- 起始頁面 --- */
+.start-page-title {
+  position: absolute;
+  top: 27%;
+  left: 50%;
+  font-size: 200px;
+  transform: translate(-50%, -50%);
+  font-weight:900;
+}
+
+.start-button-center {
+  position: absolute;
+  top: 60%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.start-button-text{
+  position: absolute; 
+  top:45%;
+  left:50%;
+  font-size: 55px;
+  font-weight:700;
+  transform: translate(-50%,-50%);
+}
+
+/* --- 說明頁面 --- */
+.sticker-text{
+  position: absolute;
+  top: 15%;
+  left: 50%;
+  font-size: 48px;
+  font-weight:800;
+  transform: translate(-50%,-50%);
+}
+
+.instructions-text{
+  position: absolute;
+  top: 48%;
+  left: 57%;
+  width: 60%;
+  font-size: 45px;
+  font-weight: 600;
+  transform: translate(-50%,-50%);
+  line-height: 1.5;
+}
+
+.continue-button{
+  position: absolute;
+  bottom: 22%;
+  right: 22%;
+}
+
+.loop-animation {
+  animation: buttonLoop 2s ease-in-out infinite alternate;
+  transform-origin: center;
+}
+
+@keyframes buttonLoop {
+  0% {
+    transform: translateX(-50px);
+  }
+  100% {
+    transform: translateX(50px);
+  }
+}
+
+/* --- 卡片頁面 --- */
+.player-container {
+  position: relative;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 993px;
+  height: 200px;
+  display: flex;
+  align-items: end;
+  justify-content: center;
+  gap:20px;
+}
+
+.player-arrow{
+  margin: 10px auto 0 auto;
+}
+
+.player-content{
+  height: 100%;
+  position: relative;  /* ✅ 文字相對此容器置中 */
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.player-score-text{
+  position: absolute;
+  top:60%;
+  left:50%;
+  font-size: 46px;
+  font-weight:800;
+  transform: translateX(-50%);
+}
+
+.cards-container-grid{
+  width: 1655px;
+  height: 671px;
+  margin-top: 20px;
+  display: grid;
+  justify-content: center;
+  align-content:center;
+  position: relative;
+  left:50%;
+  transform: translateX(-50%);
+}
+
+.card-frame{
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center; 
+  transform-origin: center;
+
+  /* 3pair ~ 12pair */
+  width: 100%;     
+  height: 100%;
+}
+
+
+.card-choosed{
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width:100%;
+  height:100%;
+  z-index:99;
+}
+
+.card-content{
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 36px;
+  font-weight: 700;
   text-align: center;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+.front{
+  transform: rotateY(90deg);
+  transition: all ease-in 0.2s;
+  position: absolute;
+  top:-16px;
+  left:-13px;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+.flipped .front{
+  transform: rotateY(0deg);
+  transition-delay: 0.2s;
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
+.back{
+  transition: all ease-in 0.2s;
+  transition-delay: 0.2s;
+}
+
+.flipped .back{
+  transform: rotateY(90deg);
+  transition-delay: 0s;
+}
+
+.matching-answer-frame{
+  position: absolute;
+  top: 10%;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.matching-answer-content{
+  position: absolute;
+  top: 10%;
+  left: 50%;
+  transform: translateX(-50%);
+  text-align: center;
+}
+
+.matching-answer-cards{
   display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+  gap: 20px;
 }
 
-.App-link {
-  color: #61dafb;
+.matching-answer-text{
+  margin: 30px 0;
+  font-weight: 700;
+  font-size: 36px;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.next-button{
+  position: relative;
 }
+
+.next-button-text{
+  position: absolute;
+  top:3px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 45px;
+  font-weight:700;
+}
+
+/* --- 分數頁面 --- */
+.scores-frame{
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+}
+.scores-title {
+  font-size: 45px;
+  font-weight: 800;
+  position: absolute;
+  top:19%;
+  left:50%;
+  transform: translate(-50%,-50%);
+}
+
+.scores-list {
+  font-size: 48px;
+  list-style: none;
+  padding: 0;
+  text-align: left;
+  width: 600px;
+  height: 500px;
+  position: absolute;
+  top:48%;
+  left:50%;
+  transform: translate(-50%,-50%);
+}
+
+.scores-list li {
+  margin-bottom: 20px;
+  display: flex;
+  justify-content: space-between;
+  height: 80px;
+  width: 550px;
+}
+
+.scores-list span {
+  font-weight: 800;
+  margin-top: 6px;
+  position: absolute;
+  left: 55%;
+  transform: translateX(-50%);
+}
+
+.trophy-img{
+  position: absolute;
+  left: 510px;
+  margin-top: -15px;
+}
+
+.scores-buttons-container {
+  position: absolute;
+  bottom: 13%;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.scores-buttons-container .image-button {
+  margin: 0 30px;
+}
+
