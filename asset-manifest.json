@@ -1,0 +1,15 @@
+{
+  "files": {
+    "main.css": "/matching-viewsonic/static/css/main.99cb6a83.css",
+    "main.js": "/matching-viewsonic/static/js/main.cccbd129.js",
+    "static/js/453.9f31b82a.chunk.js": "/matching-viewsonic/static/js/453.9f31b82a.chunk.js",
+    "index.html": "/matching-viewsonic/index.html",
+    "main.99cb6a83.css.map": "/matching-viewsonic/static/css/main.99cb6a83.css.map",
+    "main.cccbd129.js.map": "/matching-viewsonic/static/js/main.cccbd129.js.map",
+    "453.9f31b82a.chunk.js.map": "/matching-viewsonic/static/js/453.9f31b82a.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.99cb6a83.css",
+    "static/js/main.cccbd129.js"
+  ]
+}
