@@ -1,19 +1,19 @@
 
-import { useEffect } from "react";
+import { useEffect,useMemo } from "react";
 import useClickAnimation from "../hooks/useClickAnimation"
 import useSendGameMessage from "../hooks/useSendGameMessage"
 import usePageAssets from "../hooks/usePageAssets";
+import useGameMode from "../hooks/useGameMode";
 
 const cfg = (typeof window !== 'undefined' && window.gameConfig) ? window.gameConfig : {};
 
-// 取得目前的遊戲模式，若沒設定則預設為 matching
-const gameMode = cfg.settings?.gameMode || 'matching';
-
-const modeImages = cfg.images?.[gameMode] || {};
-const modeStrings = cfg.strings?.[gameMode] || {};
-const modeAssets = cfg.assets?.[gameMode] || [];
-
 const StartPage = ({ onStartGame, backgroundImage }) => {
+  const gameMode=useGameMode()
+  const { modeImages, modeStrings, modeAssets } = useMemo(() => ({
+    modeImages: cfg.images?.[gameMode] || {},
+    modeStrings : cfg.strings?.[gameMode] || {},
+    modeAssets : cfg.assets?.[gameMode] || [],
+  }), [gameMode]);
   const { buttonScale,setScale, handleClickAnimation }=useClickAnimation(onStartGame)
   const { sendMessage }=useSendGameMessage()
   const pageAssets = usePageAssets(modeAssets, 1);

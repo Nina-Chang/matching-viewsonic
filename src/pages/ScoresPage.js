@@ -1,23 +1,24 @@
-import React, { useEffect } from 'react';
+import React, { useEffect,useMemo} from 'react';
 import useClickAnimation from "../hooks/useClickAnimation"
 import useSendGameMessage from "../hooks/useSendGameMessage"
 import usePageAssets from "../hooks/usePageAssets";
+import useGameMode from "../hooks/useGameMode";
 
 const cfg = (typeof window !== 'undefined' && window.gameConfig) ? window.gameConfig : {};
 
-// 取得目前的遊戲模式，若沒設定則預設為 matching
-const gameMode = cfg.settings?.gameMode || 'matching';
-
-const modeImages = cfg.images?.[gameMode] || {};
-const modeStrings = cfg.strings?.[gameMode] || {};
-const modePlayers = cfg.players?.[gameMode] || [];
-const modeSounds = cfg.sounds?.[gameMode] || {};
-const modeAssets = cfg.assets?.[gameMode] || [];
 
 const ScoresPage = ({ players,setPlayers,bgmAudio, navigateTo, backgroundImage }) => {
+  const gameMode=useGameMode()
+  const { modeImages,modeStrings, modePlayers, modeSounds,modeAssets } = useMemo(() => ({
+    modeImages: cfg.images?.[gameMode] || {},
+    modeStrings : cfg.strings?.[gameMode] || {},
+    modePlayers: cfg.players?.[gameMode] || [],
+    modeSounds: cfg.sounds?.[gameMode] || {},
+    modeAssets : cfg.assets?.[gameMode] || [],
+  }), [gameMode]);
   const { buttonScale,setScale, handleClickAnimation }=useClickAnimation((key) => handleAfterClickingButton(key))
   const { sendMessage }=useSendGameMessage()
-  const pageAssets = usePageAssets(modeAssets, 1);
+  const pageAssets = usePageAssets(modeAssets, 4);
   
   useEffect(() => {
     // 當這一頁載入時，立刻通知外層

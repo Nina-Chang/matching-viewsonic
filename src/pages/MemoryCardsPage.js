@@ -119,7 +119,7 @@ const MemoryCardsPage = ({bgmAudio, navigateTo, players, setPlayers, backgroundI
   const [cardDisabled, setCardDisabled] = useState(false)
   const [matchFrameVisible, setMatchFrameVisible] = useState(false)
   const { sendMessage }=useSendGameMessage()
-  const pageAssets = usePageAssets(modeAssets, 1);
+  const pageAssets = usePageAssets(modeAssets, 3);
   
   const gamePairs = useMemo(() => {
     const rawQuestions = modeQuestions?.[0]?.questions || [];

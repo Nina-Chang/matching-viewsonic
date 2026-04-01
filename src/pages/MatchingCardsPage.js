@@ -165,7 +165,7 @@ const MatchingCardsPage = ({bgmAudio, navigateTo, players, setPlayers, backgroun
   const [cardDisabled, setCardDisabled] = useState(false)
   const [matchFrameVisible, setMatchFrameVisible] = useState(false)
   const { sendMessage }=useSendGameMessage()
-  const pageAssets = usePageAssets(modeAssets, 1);
+  const pageAssets = usePageAssets(modeAssets, 3);
 
   const rawQuestions = useMemo(() => 
     modeQuestions?.[0]?.questions || [], 

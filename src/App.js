@@ -1,26 +1,27 @@
 import './App.css';
-import { useState, useLayoutEffect,useEffect, useRef } from 'react';
+import { useState, useLayoutEffect,useEffect, useRef,useMemo} from 'react';
 import StartPage from './pages/StartPage';
 import InstructionsPage from './pages/InstructionsPage';
 import MatchingCardsPage from './pages/MatchingCardsPage';
 import MemoryCardsPage from './pages/MemoryCardsPage';
 import ScoresPage from './pages/ScoresPage';
+import useGameMode from "./hooks/useGameMode"
 
 const cfg = (typeof window !== 'undefined' && window.gameConfig) ? window.gameConfig : {};
 
-// 取得目前的遊戲模式，若沒設定則預設為 matching
-const gameMode = cfg.settings?.gameMode || 'matching';
-const modeImages = cfg.images?.[gameMode] || {};
-const modePlayers = cfg.players?.[gameMode] || [];
-
-const backgroundImages = {
-  start: modeImages?.bgStart || './images/background/doodle_matching_01_FHD.png',
-  instructions: modeImages?.bgInstructions || './images/background/doodle_matching_02_FHD.png',
-  cards: modeImages?.bgCards || './images/background/doodle_matching_03_FHD.png', 
-  scores: modeImages?.bgScores || './images/background/doodle_matching_06_FHD.png',
-};
-
 function App() {
+  const gameMode=useGameMode()
+  const { modeImages, modePlayers, modeSounds } = useMemo(() => ({
+    modeImages: cfg.images?.[gameMode] || {},
+    modePlayers: cfg.players?.[gameMode] || [],
+    modeSounds: cfg.sounds?.[gameMode] || {},
+  }), [gameMode]);
+  const backgroundImages = {
+    start: modeImages?.bgStart || './images/background/doodle_matching_01_FHD.png',
+    instructions: modeImages?.bgInstructions || './images/background/doodle_matching_02_FHD.png',
+    cards: modeImages?.bgCards || './images/background/doodle_matching_03_FHD.png', 
+    scores: modeImages?.bgScores || './images/background/doodle_matching_06_FHD.png',
+  };
   const [page, setPage] = useState('start');
   const [players, setPlayers] = useState(modePlayers || []);
   const [scale, setScale] = useState(1);
@@ -95,13 +96,13 @@ function App() {
         {/* 場景2 */}
         {page === 'instructions' && (<InstructionsPage navigateTo={navigateTo} backgroundImage={backgroundImages.instructions}/>)}
         {/* 場景3 */}
-        {(page === 'cards'&&cfg.settings.gameMode==="matching") && (<MatchingCardsPage bgmAudio={audioRef.current} navigateTo={navigateTo} players={players} setPlayers={setPlayers} backgroundImage={backgroundImages.cards}/>)}
-        {(page === 'cards'&&cfg.settings.gameMode==="memory") && (<MemoryCardsPage bgmAudio={audioRef.current} navigateTo={navigateTo} players={players} setPlayers={setPlayers} backgroundImage={backgroundImages.cards}/>)}
+        {(page === 'cards'&&gameMode==="matching") && (<MatchingCardsPage bgmAudio={audioRef.current} navigateTo={navigateTo} players={players} setPlayers={setPlayers} backgroundImage={backgroundImages.cards}/>)}
+        {(page === 'cards'&&gameMode==="memory") && (<MemoryCardsPage bgmAudio={audioRef.current} navigateTo={navigateTo} players={players} setPlayers={setPlayers} backgroundImage={backgroundImages.cards}/>)}
         {/* 場景4 */}
         {page === 'scores' && (<ScoresPage players={players} setPlayers={setPlayers} bgmAudio={audioRef.current} navigateTo={navigateTo} backgroundImage={backgroundImages.scores}/>)}
       </div>
 
-      <audio ref={audioRef} src={cfg.sounds?.bgm || './sounds/funny-cartoon-no-copyright-music.mp3'} loop preload='auto'/>
+      <audio ref={audioRef} src={modeSounds?.bgm || './sounds/funny-cartoon-no-copyright-music.mp3'} loop preload='auto'/>
     </div>
   );
 }
