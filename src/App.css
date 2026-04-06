@@ -42,7 +42,7 @@ body, html {
 /* --- 起始頁面 --- */
 .start-page-title {
   position: absolute;
-  top: 27%;
+  top: 37%;
   left: 50%;
   font-size: 200px;
   transform: translate(-50%, -50%);
@@ -258,7 +258,7 @@ body, html {
   font-size: 45px;
   font-weight: 800;
   position: absolute;
-  top:19%;
+  top:21.5%;
   left:50%;
   transform: translate(-50%,-50%);
 }

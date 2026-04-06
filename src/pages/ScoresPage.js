@@ -53,10 +53,9 @@ const ScoresPage = ({ players,setPlayers,bgmAudio, navigateTo, backgroundImage }
   return (
     <div className="page-container" style={pageStyle}>
       <img className="scores-frame" src={'images/object/doodle_matching_result_frame.png'} alt="Result Frame" />
-      <div style={modeStrings.scoresTitle.style}>
+      <div style={modeStrings.scoresTitle.style} className="scores-title">
         {modeStrings.scoresTitle.text}
       </div>
-      {/* <h1 className="scores-title">{modeStrings?.scoresTitle || 'Scores'}</h1> */}
       <ol className="scores-list">
         {sortedPlayers.map((player) => (
           <li key={player.id}>
@@ -85,9 +84,24 @@ const ScoresPage = ({ players,setPlayers,bgmAudio, navigateTo, backgroundImage }
           <img src={modeImages?.btnAgain || 'images/object/doodle_matching_again_button.png'} alt="Reset Scores" />
         </button>
       </div>
-      {pageAssets.map((asset, index) => (
-        <div key={asset.id || index} style={asset.style}>
-          {asset.text}
+      {pageAssets.map((asset) => (
+        <div key={asset.RawId || asset.id} style={asset.style}>
+            {asset.Type === 'Text' ? 
+            (
+                asset.displayContent
+            ) 
+            : (
+                <img 
+                    src={asset.displayContent} 
+                    alt="game-asset" 
+                    style={{ 
+                        width: '100%', 
+                        height: '100%', 
+                        objectFit: 'contain',
+                        display: 'block' 
+                    }} 
+                />
+            )}
         </div>
       ))}
     </div>

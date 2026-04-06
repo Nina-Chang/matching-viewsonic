@@ -32,10 +32,9 @@ const StartPage = ({ onStartGame, backgroundImage }) => {
 
   return (
     <div className="page-container start-page" style={pageStyle}>
-      <div style={modeStrings.startTitle.style}>
+      <div style={modeStrings.startTitle.style} className='start-page-title'>
         {modeStrings.startTitle.text}
       </div>
-      {/* <h1 className='start-page-title'>{modeStrings.startTitle || 'Matching'}</h1> */}
       <button 
       className="image-button start-button-center" 
       onMouseEnter={() => setScale("start",1.1)}
@@ -45,9 +44,24 @@ const StartPage = ({ onStartGame, backgroundImage }) => {
         <img src={modeImages?.btnStart || 'images/start.png'} alt="Start Game" />
         <span className="start-button-text">Start</span>
       </button>
-      {pageAssets.map((asset, index) => (
-        <div key={asset.id || index} style={asset.style}>
-          {asset.text}
+      {pageAssets.map((asset) => (
+        <div key={asset.RawId || asset.id} style={asset.style}>
+            {asset.Type === 'Text' ? 
+            (
+                asset.displayContent
+            ) 
+            : (
+                <img 
+                    src={asset.displayContent} 
+                    alt="game-asset" 
+                    style={{ 
+                        width: '100%', 
+                        height: '100%', 
+                        objectFit: 'contain',
+                        display: 'block' 
+                    }} 
+                />
+            )}
         </div>
       ))}
     </div>
