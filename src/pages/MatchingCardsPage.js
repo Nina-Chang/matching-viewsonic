@@ -6,11 +6,9 @@ import styled from 'styled-components';
 
 const cfg = (typeof window !== 'undefined' && window.gameConfig) ? window.gameConfig : {};
 
-const gameMode = 'matching';
-
-const modeSound = cfg.sounds?.[gameMode] || {};
-const modeQuestions = cfg.questions?.[gameMode] || [];
-const modeAssets = cfg.assets?.[gameMode] || [];
+const modeSound = cfg?.sounds || {};
+const modeAssets = cfg?.assets || [];
+const modeQuestions = cfg?.questions || [];
 
 const CardsContainerGrid = styled.div`
   width: 1655px;

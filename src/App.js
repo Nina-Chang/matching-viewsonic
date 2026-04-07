@@ -9,24 +9,23 @@ import useGameMode from "./hooks/useGameMode"
 
 const cfg = (typeof window !== 'undefined' && window.gameConfig) ? window.gameConfig : {};
 
+const modeImages = cfg?.images || {};
+const modePlayers = cfg?.players || [];
+const modeSounds = cfg?.sounds || {};
+
+const backgroundImages = {
+  start: modeImages?.bgStart || './images/background/doodle_matching_01_FHD.png',
+  instructions: modeImages?.bgInstructions || './images/background/doodle_matching_02_FHD.png',
+  cards: modeImages?.bgCards || './images/background/doodle_matching_03_FHD.png', 
+  scores: modeImages?.bgScores || './images/background/doodle_matching_06_FHD.png',
+};
+
 function App() {
   const gameMode=useGameMode()
-  const { modeImages, modePlayers, modeSounds } = useMemo(() => ({
-    modeImages: cfg.images?.[gameMode] || {},
-    modePlayers: cfg.players?.[gameMode] || [],
-    modeSounds: cfg.sounds?.[gameMode] || {},
-  }), [gameMode]);
-  const backgroundImages = {
-    start: modeImages?.bgStart || './images/background/doodle_matching_01_FHD.png',
-    instructions: modeImages?.bgInstructions || './images/background/doodle_matching_02_FHD.png',
-    cards: modeImages?.bgCards || './images/background/doodle_matching_03_FHD.png', 
-    scores: modeImages?.bgScores || './images/background/doodle_matching_06_FHD.png',
-  };
   const [page, setPage] = useState('start');
   const [players, setPlayers] = useState(modePlayers || []);
   const [scale, setScale] = useState(1);
   const audioRef=useRef(null)
-
   const navigateTo = (pageName) => setPage(pageName);
 
   const gameStyle = { 

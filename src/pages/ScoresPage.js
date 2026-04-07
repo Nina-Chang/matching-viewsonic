@@ -1,21 +1,16 @@
-import React, { useEffect,useMemo} from 'react';
+import React, { useEffect} from 'react';
 import useClickAnimation from "../hooks/useClickAnimation"
 import useSendGameMessage from "../hooks/useSendGameMessage"
 import usePageAssets from "../hooks/usePageAssets";
-import useGameMode from "../hooks/useGameMode";
 
 const cfg = (typeof window !== 'undefined' && window.gameConfig) ? window.gameConfig : {};
-
+const modeImages = cfg?.images || {};
+const modeStrings = cfg?.strings || {};
+const modePlayers = cfg?.players || [];
+const modeSounds = cfg?.sounds || {};
+const modeAssets = cfg?.assets || [];
 
 const ScoresPage = ({ players,setPlayers,bgmAudio, navigateTo, backgroundImage }) => {
-  const gameMode=useGameMode()
-  const { modeImages,modeStrings, modePlayers, modeSounds,modeAssets } = useMemo(() => ({
-    modeImages: cfg.images?.[gameMode] || {},
-    modeStrings : cfg.strings?.[gameMode] || {},
-    modePlayers: cfg.players?.[gameMode] || [],
-    modeSounds: cfg.sounds?.[gameMode] || {},
-    modeAssets : cfg.assets?.[gameMode] || [],
-  }), [gameMode]);
   const { buttonScale,setScale, handleClickAnimation }=useClickAnimation((key) => handleAfterClickingButton(key))
   const { sendMessage }=useSendGameMessage()
   const pageAssets = usePageAssets(modeAssets, 4);
