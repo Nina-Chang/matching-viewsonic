@@ -52,16 +52,23 @@ const ScoresPage = ({ players,setPlayers,bgmAudio, navigateTo, backgroundImage }
         {modeStrings.scoresTitle.text}
       </div>
       <ol className="scores-list">
-        {sortedPlayers.map((player) => (
-          <li key={player.id}>
-            <img src={(modeImages?.finchPlayers?.[player.id-1]) || `images/object/doodle_matching_finch_0${player.id}.png`} alt={player.name} />
-            <img className="score-item-frame" src={"images/object/doodle_matching_point_frame.png"} alt={"point frame"} />
-            <span>{player.score}</span>
-            {sortedPlayers[0].score === player.score && player.score !== 0 && (
-              <img className='trophy-img' src={modeImages?.trophy || 'images/stage_jeopardy_trophy.png'} alt='Champion' />
-            )}
-          </li>
-        ))}
+        {sortedPlayers.map((player) => {
+          const playerImgKey = `finchPlayer${player.id}`;
+          const playerImgSrc = modeImages?.[playerImgKey] || `images/object/doodle_matching_finch_0${player.id}.png`;
+
+          return (
+            <li key={player.id}>
+              <img src={playerImgSrc} alt={player.name} />
+              
+              <img className="score-item-frame" src={"images/object/doodle_matching_point_frame.png"} alt={"point frame"} />
+              <span>{player.score}</span>
+              
+              {sortedPlayers[0].score === player.score && player.score !== 0 && (
+                <img className='trophy-img' src={modeImages?.trophy || 'images/stage_jeopardy_trophy.png'} alt='Champion' />
+              )}
+            </li>
+          );
+        })}
       </ol>
       <div className="scores-buttons-container">
         <button className="image-button" 
