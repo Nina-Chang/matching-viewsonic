@@ -95,9 +95,10 @@ function App() {
         {/* 場景2 */}
         {page === 'instructions' && (<InstructionsPage navigateTo={navigateTo} backgroundImage={backgroundImages.instructions}/>)}
         {/* 場景3 */}
+        {/* 場景4-Match Success */}
         {(page === 'cards'&&gameMode==="matching") && (<MatchingCardsPage bgmAudio={audioRef.current} navigateTo={navigateTo} players={players} setPlayers={setPlayers} backgroundImage={backgroundImages.cards}/>)}
         {(page === 'cards'&&gameMode==="memory") && (<MemoryCardsPage bgmAudio={audioRef.current} navigateTo={navigateTo} players={players} setPlayers={setPlayers} backgroundImage={backgroundImages.cards}/>)}
-        {/* 場景4 */}
+        {/* 場景5 */}
         {page === 'scores' && (<ScoresPage players={players} setPlayers={setPlayers} bgmAudio={audioRef.current} navigateTo={navigateTo} backgroundImage={backgroundImages.scores}/>)}
       </div>
 

@@ -13,11 +13,11 @@ const modeAssets = cfg?.assets || [];
 const ScoresPage = ({ players,setPlayers,bgmAudio, navigateTo, backgroundImage }) => {
   const { buttonScale,setScale, handleClickAnimation }=useClickAnimation((key) => handleAfterClickingButton(key))
   const { sendMessage }=useSendGameMessage()
-  const pageAssets = usePageAssets(modeAssets, 4);
+  const pageAssets = usePageAssets(modeAssets, 5);
   
   useEffect(() => {
     // 當這一頁載入時，立刻通知外層
-    sendMessage({ sceneId: 4});
+    sendMessage({ sceneId: 5});
   }, [sendMessage]);
 
   const pageStyle = { 

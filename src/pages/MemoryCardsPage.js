@@ -117,7 +117,8 @@ const MemoryCardsPage = ({bgmAudio, navigateTo, players, setPlayers, backgroundI
   const [cardDisabled, setCardDisabled] = useState(false)
   const [matchFrameVisible, setMatchFrameVisible] = useState(false)
   const { sendMessage }=useSendGameMessage()
-  const pageAssets = usePageAssets(modeAssets, 3);
+  const pageAssetsInStage3 = usePageAssets(modeAssets, 3);
+  const pageAssetsInStage4 = usePageAssets(modeAssets, 4);
   
   const gamePairs = useMemo(() => {
     const rawQuestions = modeQuestions?.[0]?.questions || [];
@@ -131,6 +132,7 @@ const MemoryCardsPage = ({bgmAudio, navigateTo, players, setPlayers, backgroundI
   const handleAfterClickingNextButton=()=>{
     setChoiceOne(null)
     setChoiceTwo(null)
+    sendMessage({ sceneId: 4});
     setMatchFrameVisible(false);
     setCardDisabled(false);
 
@@ -292,6 +294,7 @@ const MemoryCardsPage = ({bgmAudio, navigateTo, players, setPlayers, backgroundI
         },200)
         // 顯示答對框
         setTimeout(()=>{
+          sendMessage({ sceneId: 4});
           setMatchFrameVisible(true);
         }, 500)
         resetTurn("match")
@@ -368,7 +371,27 @@ const MemoryCardsPage = ({bgmAudio, navigateTo, players, setPlayers, backgroundI
           )
         }
       </CardsContainerGrid>
-      {pageAssets.map((asset) => (
+      {pageAssetsInStage3.map((asset) => (
+        <div key={asset.RawId || asset.id} style={asset.style}>
+            {asset.Type === 'Text' ? 
+            (
+                asset.displayContent
+            ) 
+            : (
+                <img 
+                    src={asset.displayContent} 
+                    alt="game-asset" 
+                    style={{ 
+                        width: '100%', 
+                        height: '100%', 
+                        objectFit: 'contain',
+                        display: 'block' 
+                    }} 
+                />
+            )}
+        </div>
+      ))}
+      {matchFrameVisible && pageAssetsInStage4.map((asset) => (
         <div key={asset.RawId || asset.id} style={asset.style}>
             {asset.Type === 'Text' ? 
             (

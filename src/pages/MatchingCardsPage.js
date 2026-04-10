@@ -163,7 +163,8 @@ const MatchingCardsPage = ({bgmAudio, navigateTo, players, setPlayers, backgroun
   const [cardDisabled, setCardDisabled] = useState(false)
   const [matchFrameVisible, setMatchFrameVisible] = useState(false)
   const { sendMessage }=useSendGameMessage()
-  const pageAssets = usePageAssets(modeAssets, 3);
+  const pageAssetsInStage3 = usePageAssets(modeAssets, 3);
+  const pageAssetsInStage4 = usePageAssets(modeAssets, 4);
 
   const rawQuestions = useMemo(() => 
     modeQuestions?.[0]?.questions || [], 
@@ -181,6 +182,7 @@ const MatchingCardsPage = ({bgmAudio, navigateTo, players, setPlayers, backgroun
   const handleAfterClickingNextButton=()=>{
     setChoiceOne(null)
     setChoiceTwo(null)
+    sendMessage({ sceneId: 4});
     setMatchFrameVisible(false);
     setCardDisabled(false);
 
@@ -335,6 +337,7 @@ const MatchingCardsPage = ({bgmAudio, navigateTo, players, setPlayers, backgroun
         }))
         // 顯示答對框
         setTimeout(()=>{
+          sendMessage({ sceneId: 4});
           setMatchFrameVisible(true);
         }, 100)
         playSound(modeSound?.correct || './sounds/correct.mp3')
@@ -428,7 +431,27 @@ const MatchingCardsPage = ({bgmAudio, navigateTo, players, setPlayers, backgroun
           )
         }
       </CardsContainerGrid>
-      {pageAssets.map((asset) => (
+      {pageAssetsInStage3.map((asset) => (
+        <div key={asset.RawId || asset.id} style={asset.style}>
+            {asset.Type === 'Text' ? 
+            (
+                asset.displayContent
+            ) 
+            : (
+                <img 
+                    src={asset.displayContent} 
+                    alt="game-asset" 
+                    style={{ 
+                        width: '100%', 
+                        height: '100%', 
+                        objectFit: 'contain',
+                        display: 'block' 
+                    }} 
+                />
+            )}
+        </div>
+      ))}
+      {matchFrameVisible && pageAssetsInStage4.map((asset) => (
         <div key={asset.RawId || asset.id} style={asset.style}>
             {asset.Type === 'Text' ? 
             (
