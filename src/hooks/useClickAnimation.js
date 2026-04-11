@@ -14,7 +14,7 @@ const useClickAnimation = (onComplete, delay = 300) => {
     await new Promise((resolve) => setTimeout(resolve, 100));
     
     setButtonScale(prev => ({ ...prev, [key]: 1 }));
-    const audioPlayer =new Audio(modeSounds.buttonClick || './sounds/buttonClick.mp3');
+    const audioPlayer =new Audio(modeSounds.buttonClick || './sounds/button-click.mp3');
     audioPlayer.volume = 0.316; 
     audioPlayer.loop = false;
     audioPlayer.play().catch((error)=>{console.log("Audio failed",error)});
