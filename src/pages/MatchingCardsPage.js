@@ -21,18 +21,18 @@ const CardsContainerGrid = styled.div`
   left: 50%;
   transform: translateX(-50%);
 
-  ${({ pairCount }) => {
+  ${({ paircount }) => {
     // 3-7 pairs: 2 rows, 211px width, 16px gap
-    if (pairCount >= 3 && pairCount <= 7) {
+    if (paircount >= 3 && paircount <= 7) {
       return `
-        grid-template-columns: repeat(${pairCount}, 211px);
+        grid-template-columns: repeat(${paircount}, 211px);
         grid-template-rows: repeat(2, 218px);
         gap: 16px;
       `;
     }
 
     // 8 pairs: 2 rows, 211px width, 0px gap
-    if (pairCount === 8) {
+    if (paircount === 8) {
       return `
         grid-template-columns: repeat(8, 211px);
         grid-template-rows: repeat(2, 218px);
@@ -41,7 +41,7 @@ const CardsContainerGrid = styled.div`
     }
 
     // 9 pairs: 6 cols × 198px, 3 rows, 16px gap
-    if (pairCount === 9) {
+    if (paircount === 9) {
       return `
         grid-template-columns: repeat(6, 198px);
         grid-template-rows: repeat(3, 205px);
@@ -50,7 +50,7 @@ const CardsContainerGrid = styled.div`
     }
 
     // 10-12 pairs: 8 cols × 198px, 3 rows, 10px gap
-    if (pairCount >= 10 && pairCount <= 12) {
+    if (paircount >= 10 && paircount <= 12) {
       return `
         grid-template-columns: repeat(8, 198px);
         grid-template-rows: repeat(3, 205px);
@@ -59,7 +59,7 @@ const CardsContainerGrid = styled.div`
     }
 
     // 13-14 pairs: 7 cols × 147px, 4 rows, 18px/20px gaps
-    if (pairCount >= 13 && pairCount <= 14) {
+    if (paircount >= 13 && paircount <= 14) {
       return `
         grid-template-columns: repeat(7, 147px);
         grid-template-rows: repeat(4, 152px);
@@ -69,7 +69,7 @@ const CardsContainerGrid = styled.div`
     }
 
     // 15-16 pairs: 8 cols × 147px, 4 rows, 18px/20px gaps
-    if (pairCount >= 15 && pairCount <= 16) {
+    if (paircount >= 15 && paircount <= 16) {
       return `
         grid-template-columns: repeat(8, 147px);
         grid-template-rows: repeat(4, 152px);
@@ -79,7 +79,7 @@ const CardsContainerGrid = styled.div`
     }
 
     // 17-18 pairs: 9 cols × 147px, 4 rows, 18px/20px gaps
-    if (pairCount >= 17 && pairCount <= 18) {
+    if (paircount >= 17 && paircount <= 18) {
       return `
         grid-template-columns: repeat(9, 147px);
         grid-template-rows: repeat(4, 152px);
@@ -89,7 +89,7 @@ const CardsContainerGrid = styled.div`
     }
 
     // 19-20 pairs: 10 cols × 147px, 4 rows, 18px/20px gaps
-    if (pairCount >= 19 && pairCount <= 20) {
+    if (paircount >= 19 && paircount <= 20) {
       return `
         grid-template-columns: repeat(10, 147px);
         grid-template-rows: repeat(4, 152px);
@@ -116,22 +116,22 @@ const CardFrame = styled.div`
   align-items: center;
   transform-origin: center;
 
-  ${({ pairCount }) => {
-    if (pairCount >= 13) {
+  ${({ paircount }) => {
+    if (paircount >= 13) {
       return `
         transform: scale(0.8);
         width: 135%;
         height: 135%;
         margin-top: -24px;
         margin-left: -20px;
-        ${pairCount === 13 ? '&:nth-child(22) { grid-column-start: 2; }' : ''}
-        ${pairCount === 15 ? '&:nth-child(25) { grid-column-start: 2; }' : ''}
-        ${pairCount === 17 ? '&:nth-child(28) { grid-column-start: 2; }' : ''}
-        ${pairCount === 19 ? '&:nth-child(31) { grid-column-start: 2; }' : ''}
+        ${paircount === 13 ? '&:nth-child(22) { grid-column-start: 2; }' : ''}
+        ${paircount === 15 ? '&:nth-child(25) { grid-column-start: 2; }' : ''}
+        ${paircount === 17 ? '&:nth-child(28) { grid-column-start: 2; }' : ''}
+        ${paircount === 19 ? '&:nth-child(31) { grid-column-start: 2; }' : ''}
       `;
     }
     
-    if (pairCount === 10) {
+    if (paircount === 10) {
       return `
         width: 100%;
         height: 100%;
@@ -139,7 +139,7 @@ const CardFrame = styled.div`
       `;
     }
     
-    if (pairCount === 11) {
+    if (paircount === 11) {
       return `
         width: 100%;
         height: 100%;
@@ -178,11 +178,11 @@ const MatchingCardsPage = ({bgmAudio, navigateTo, players, setPlayers, backgroun
     [rawQuestions]
   );
 
-  const pairCount=gamePairs.length
+  const gamePairCount=gamePairs.length
   const handleAfterClickingNextButton=()=>{
     setChoiceOne(null)
     setChoiceTwo(null)
-    sendMessage({ sceneId: 4});
+    sendMessage({ sceneId: 3});
     setMatchFrameVisible(false);
     setCardDisabled(false);
 
@@ -204,7 +204,7 @@ const MatchingCardsPage = ({bgmAudio, navigateTo, players, setPlayers, backgroun
     })
 
     const totalScores=players.reduce((sum,player)=>sum+(player.score||0),0)
-    if(totalScores===pairCount){
+    if(totalScores===gamePairCount){
       navigateTo('scores')
       return;
     }
@@ -248,9 +248,16 @@ const MatchingCardsPage = ({bgmAudio, navigateTo, players, setPlayers, backgroun
       return ''; 
     }
     if(imagePath.includes('/')){
-      const filename = imagePath.split('/').pop(); // 取檔名
-      const match = filename.match(/doodle_matching_(.+)\.png$/); // 提取名稱部分
-      return match ? match[1].replace(/_/g, ' ') : ''; // 底線轉空格
+      // 1. 如果包含路徑，先取最後的檔名 (例如: a/b/apple.png -> apple.png)
+      let filename = imagePath.split('/').pop()
+
+      // 2. 去除副檔名 (例如: apple.png -> apple)
+      // 這裡使用正規表達式取代掉最後一個點之後的文字
+      filename = filename.replace(/\.[^/.]+$/, "");
+
+      // 3. (選用) 底線轉空格：如果你原本的檔名是 doodle_memory_apple
+      // 這裡會回傳 "doodle memory apple" 方便比對
+      return filename.replace(/_/g, ' ');
     }
     else{
       return imagePath; // 不是圖片路徑，直接返回內容
@@ -318,15 +325,16 @@ const MatchingCardsPage = ({bgmAudio, navigateTo, players, setPlayers, backgroun
       bgmAudio.play().catch((error)=>{console.log("Audio failed",error)});
     }
     shuffleCards()
-    setPlayers((pre)=>{
-      return pre.map((player)=>player.id===1?{...player,status:true}:player)
-    })
   }, []);
 
   useEffect(() => {
     if (choiceOne && choiceTwo && choiceOne.id !== choiceTwo.id && choiceOne.content !== choiceTwo.content) {
       setCardDisabled(true);
-      if (getImageName(choiceOne.content) === getImageName(choiceTwo.content)) {
+      const name1 = getImageName(choiceOne.content);
+      const name2 = getImageName(choiceTwo.content);
+
+      const isMatch = name1.includes(name2) || name2.includes(name1);
+      if (isMatch) {
         // 配對成功 卡片處理
         setCards(prevCards => prevCards.map(c => { 
           if (c.id === choiceOne.id || c.id === choiceTwo.id) {
@@ -378,9 +386,9 @@ const MatchingCardsPage = ({bgmAudio, navigateTo, players, setPlayers, backgroun
       </div>
 
       {/* 卡片區域 */}
-      <CardsContainerGrid pairCount={pairCount}>
+      <CardsContainerGrid paircount={gamePairCount}>
         {cards.map((card) => (
-          <CardFrame key={card?.id} pairCount={pairCount} style={{visibility:card?.disabled&&card?.disabled===true ? 'hidden' : 'visible',cursor:cardDisabled?'auto':'pointer'}} onClick={()=>{handleCardClick(card)}}>
+          <CardFrame key={card?.id} paircount={gamePairCount} style={{visibility:card?.disabled&&card?.disabled===true ? 'hidden' : 'visible',cursor:cardDisabled?'auto':'pointer'}} onClick={()=>{handleCardClick(card)}}>
             <img src={`./images/object/doodle_matching_${card?.matched && card?.matched===true?"right":card?.matched===false?"wrong":"question"}.png`} alt="Card" />
             {card?.matched===null && card?.active && <img className="card-choosed" src={`./images/object/doodle_matching_choose.png`} alt="Card" />}
             {
@@ -431,7 +439,7 @@ const MatchingCardsPage = ({bgmAudio, navigateTo, players, setPlayers, backgroun
           )
         }
       </CardsContainerGrid>
-      {pageAssetsInStage3.map((asset) => (
+      {!matchFrameVisible &&pageAssetsInStage3.map((asset) => (
         <div key={asset.RawId || asset.id} style={asset.style}>
             {asset.Type === 'Text' ? 
             (

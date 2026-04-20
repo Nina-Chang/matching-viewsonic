@@ -22,18 +22,18 @@ const CardsContainerGrid = styled.div`
   left: 50%;
   transform: translateX(-50%);
 
-  ${({ pairCount }) => {
+  ${({ paircount }) => {
     // 3-7 pairs: 2 rows, 211px width, 16px gap
-    if (pairCount >= 3 && pairCount <= 7) {
+    if (paircount >= 3 && paircount <= 7) {
       return `
-        grid-template-columns: repeat(${pairCount}, 211px);
+        grid-template-columns: repeat(${paircount}, 211px);
         grid-template-rows: repeat(2, 218px);
         gap: 16px;
       `;
     }
 
     // 8 pairs: 2 rows, 211px width, 0px gap
-    if (pairCount === 8) {
+    if (paircount === 8) {
       return `
         grid-template-columns: repeat(8, 211px);
         grid-template-rows: repeat(2, 218px);
@@ -42,7 +42,7 @@ const CardsContainerGrid = styled.div`
     }
 
     // 9 pairs: 6 cols × 198px, 3 rows, 16px gap
-    if (pairCount === 9) {
+    if (paircount === 9) {
       return `
         grid-template-columns: repeat(6, 198px);
         grid-template-rows: repeat(3, 205px);
@@ -51,7 +51,7 @@ const CardsContainerGrid = styled.div`
     }
 
     // 10-12 pairs: 8 cols × 198px, 3 rows, 10px gap
-    if (pairCount >= 10 && pairCount <= 12) {
+    if (paircount >= 10 && paircount <= 12) {
       return `
         grid-template-columns: repeat(8, 198px);
         grid-template-rows: repeat(3, 205px);
@@ -60,7 +60,7 @@ const CardsContainerGrid = styled.div`
     }
 
     // 13-14 pairs: 7 cols × 147px, 4 rows, 18px/20px gaps
-    if (pairCount >= 13 && pairCount <= 14) {
+    if (paircount >= 13 && paircount <= 14) {
       return `
         grid-template-columns: repeat(7, 147px);
         grid-template-rows: repeat(4, 152px);
@@ -70,7 +70,7 @@ const CardsContainerGrid = styled.div`
     }
 
     // 15-16 pairs: 8 cols × 147px, 4 rows, 18px/20px gaps
-    if (pairCount >= 15 && pairCount <= 16) {
+    if (paircount >= 15 && paircount <= 16) {
       return `
         grid-template-columns: repeat(8, 147px);
         grid-template-rows: repeat(4, 152px);
@@ -80,7 +80,7 @@ const CardsContainerGrid = styled.div`
     }
 
     // 17-18 pairs: 9 cols × 147px, 4 rows, 18px/20px gaps
-    if (pairCount >= 17 && pairCount <= 18) {
+    if (paircount >= 17 && paircount <= 18) {
       return `
         grid-template-columns: repeat(9, 147px);
         grid-template-rows: repeat(4, 152px);
@@ -90,7 +90,7 @@ const CardsContainerGrid = styled.div`
     }
 
     // 19-20 pairs: 10 cols × 147px, 4 rows, 18px/20px gaps
-    if (pairCount >= 19 && pairCount <= 20) {
+    if (paircount >= 19 && paircount <= 20) {
       return `
         grid-template-columns: repeat(10, 147px);
         grid-template-rows: repeat(4, 152px);
@@ -120,6 +120,7 @@ const MemoryCardsPage = ({bgmAudio, navigateTo, players, setPlayers, backgroundI
   const pageAssetsInStage3 = usePageAssets(modeAssets, 3);
   const pageAssetsInStage4 = usePageAssets(modeAssets, 4);
   
+  
   const gamePairs = useMemo(() => {
     const rawQuestions = modeQuestions?.[0]?.questions || [];
     return rawQuestions.map(q => ({
@@ -128,11 +129,11 @@ const MemoryCardsPage = ({bgmAudio, navigateTo, players, setPlayers, backgroundI
     }));
   }, [modeQuestions]);
 
-  const pairCount = gamePairs.length;
+  const gamePairCount = gamePairs.length;
   const handleAfterClickingNextButton=()=>{
     setChoiceOne(null)
     setChoiceTwo(null)
-    sendMessage({ sceneId: 4});
+    sendMessage({ sceneId: 3});
     setMatchFrameVisible(false);
     setCardDisabled(false);
 
@@ -154,7 +155,7 @@ const MemoryCardsPage = ({bgmAudio, navigateTo, players, setPlayers, backgroundI
     })
 
     const totalScores=players.reduce((sum,player)=>sum+(player.score||0),0)
-    if(totalScores===pairCount){
+    if(totalScores===gamePairCount){
       navigateTo('scores')
       return;
     }
@@ -198,9 +199,16 @@ const MemoryCardsPage = ({bgmAudio, navigateTo, players, setPlayers, backgroundI
       return ''; 
     }
     if(imagePath.includes('/')){
-      const filename = imagePath.split('/').pop(); // 取檔名
-      const match = filename.match(/doodle_memory_(.+)\.png$/); // 提取名稱部分
-      return match ? match[1].replace(/_/g, ' ') : ''; // 底線轉空格
+      // 1. 如果包含路徑，先取最後的檔名 (例如: a/b/apple.png -> apple.png)
+      let filename = imagePath.split('/').pop()
+
+      // 2. 去除副檔名 (例如: apple.png -> apple)
+      // 這裡使用正規表達式取代掉最後一個點之後的文字
+      filename = filename.replace(/\.[^/.]+$/, "");
+
+      // 3. (選用) 底線轉空格：如果你原本的檔名是 doodle_memory_apple
+      // 這裡會回傳 "doodle memory apple" 方便比對
+      return filename.replace(/_/g, ' ');
     }
     else{
       return imagePath; // 不是圖片路徑，直接返回內容
@@ -208,53 +216,44 @@ const MemoryCardsPage = ({bgmAudio, navigateTo, players, setPlayers, backgroundI
   }
 
   const resetTurn = (state) => {
-    setTimeout(()=>{
-      setPlayers((pre)=>{
-        const currentIndex=pre.findIndex(player=>player.status)
-        const nextIndex=pre.length===1 ? 0 : (currentIndex+1)%pre.length
-        if(state==="match"){
-          return pre.map((player,index)=>{
-            if(currentIndex===nextIndex){// 只有一位玩家
-              return {...player,score:(player.score||0)+1}
-            }
-            if(index===currentIndex){
-              return {...player,score:(player.score||0)+1}
-            }
-            else{
-              return player
-            }
-          })
-        }
-        else if(state==="not match"){
-            setChoiceOne(null)
-            setChoiceTwo(null)
-            setCardDisabled(false);
-          return pre.map((player,index)=>{
-            if(currentIndex===nextIndex){// 只有一位玩家
-              return {...player,status:true}
-            }
-            if(index===currentIndex){
-              return {...player,status:false}
-            }else if(index===nextIndex){
-              return {...player,status:true}
-            }else{
-              return player
-            }
-          })
-        }
-      })
+    // 務必 return，這樣外層才拿得到 ID 來清除
+    return setTimeout(() => {
+      // 1. 先處理卡片狀態 (MemoryCardsPage 的內部狀態)
       setCards(prevCards => prevCards.map(c => { 
-        if (c.matched === true) {// 已配對成功的卡片隱藏
-          return { ...c, matched: null, disabled: true };
-        } else if (c.matched === false) {// 配對失敗的卡片翻回去
-          return { ...c, matched: null,active:false};
+        if (c.matched === true) return { ...c, matched: null, disabled: true };
+        if (c.matched === false) return { ...c, matched: null, active: false };
+        return c;
+      }));
+
+      // 2. 處理玩家與選擇狀態 (會觸發父組件或後續渲染)
+      if (state === "not match") {
+        setChoiceOne(null);
+        setChoiceTwo(null);
+        setCardDisabled(false);
+      }
+
+      setPlayers((pre) => {
+        const currentIndex = pre.findIndex(player => player.status);
+        const nextIndex = pre.length === 1 ? 0 : (currentIndex + 1) % pre.length;
+        
+        if (state === "match") {
+          return pre.map((player, index) => {
+            if (currentIndex === nextIndex || index === currentIndex) {
+              return { ...player, score: (player.score || 0) + 1 };
+            }
+            return player;
+          });
+        } else { // not match
+          return pre.map((player, index) => {
+            if (currentIndex === nextIndex) return { ...player, status: true };
+            if (index === currentIndex) return { ...player, status: false };
+            if (index === nextIndex) return { ...player, status: true };
+            return player;
+          });
         }
-        else{
-          return c;
-        }
-      }))
-    }, 500)
-  }
+      });
+    }, 500);
+  };
 
   const handleCardClick = (card) => {
     if(!cardDisabled){
@@ -272,43 +271,54 @@ const MemoryCardsPage = ({bgmAudio, navigateTo, players, setPlayers, backgroundI
       bgmAudio.play().catch((error)=>{console.log("Audio failed",error)});
     }
     shuffleCards()
-    setPlayers((pre)=>{
-      return pre.map((player)=>player.id===1?{...player,status:true}:player)
-    })
   }, []);
 
   useEffect(() => {
-    if (choiceOne && choiceTwo && choiceOne.id !== choiceTwo.id && choiceOne.content !== choiceTwo.content) {
-      setCardDisabled(true);
-      if (getImageName(choiceOne.content) === getImageName(choiceTwo.content)) {
-        // 配對成功 卡片處理
-        setCards(prevCards => prevCards.map(c => { 
-          if (c.id === choiceOne.id || c.id === choiceTwo.id) {
-            return { ...c, matched: true };
-          }else {
-            return c;
-          }  
-        }))
-        setTimeout(()=>{
-            playSound(modeSound?.correct || './sounds/correct.mp3')
-        },200)
-        // 顯示答對框
-        setTimeout(()=>{
-          sendMessage({ sceneId: 4});
-          setMatchFrameVisible(true);
-        }, 500)
-        resetTurn("match")
-      }
-      else{
-        // 配對失敗 卡片處理   
-        setTimeout(()=>{
-            playSound(modeSound?.wrong || './sounds/wrong.mp3')
-        },200)
-        resetTurn("not match")
+    let timer1, timer2, timer3, timerReset;
+
+    if (choiceOne && choiceTwo && choiceOne.id !== choiceTwo.id) {
+      // 如果內容不同 (避免同張卡片點兩次，雖然 handleCardClick 應該有擋，但這裡加保險)
+      if (choiceOne.content !== choiceTwo.content) {
+        setCardDisabled(true);
+        const name1 = getImageName(choiceOne.content);
+        const name2 = getImageName(choiceTwo.content);
+        const isMatch = name1.includes(name2) || name2.includes(name1);
+
+        if (isMatch) {
+          // --- 匹配成功 ---
+          setCards(prevCards => prevCards.map(c => 
+            (c.id === choiceOne.id || c.id === choiceTwo.id) ? { ...c, matched: true } : c
+          ));
+
+          timer1 = setTimeout(() => {
+            playSound(modeSound?.correct || './sounds/correct.mp3');
+          }, 200);
+
+          timer2 = setTimeout(() => {
+            sendMessage({ sceneId: 4 });
+            setMatchFrameVisible(true);
+          }, 500);
+
+          timerReset = resetTurn("match");
+        } else {
+          // --- 匹配失敗 ---
+          timer3 = setTimeout(() => {
+            playSound(modeSound?.wrong || './sounds/wrong.mp3');
+          }, 200);
+
+          timerReset = resetTurn("not match");
+        }
       }
     }
-  }, [choiceOne, choiceTwo]);
 
+    // 清理函數：這是防止錯誤訊息的關鍵！
+    return () => {
+      clearTimeout(timer1);
+      clearTimeout(timer2);
+      clearTimeout(timer3);
+      clearTimeout(timerReset);
+    };
+  }, [choiceOne, choiceTwo]);
 
   return (
     <div className="page-container" style={pageStyle}>
@@ -326,9 +336,9 @@ const MemoryCardsPage = ({bgmAudio, navigateTo, players, setPlayers, backgroundI
       </div>
 
       {/* 卡片區域 */}
-      <CardsContainerGrid pairCount={pairCount}>
+      <CardsContainerGrid paircount={gamePairCount}>
         {cards.map((card) => (
-        <SingleCard key={card.id} card={card} pairCount={pairCount} cardDisabled={cardDisabled} flipped={card?.id ===choiceOne?.id || card?.id ===choiceTwo?.id || card?.matched===true} handleClick={()=>{handleCardClick(card)}}/>
+        <SingleCard key={card.id} card={card} pairCount={gamePairCount} cardDisabled={cardDisabled} flipped={card?.id ===choiceOne?.id || card?.id ===choiceTwo?.id || card?.matched===true} handleClick={()=>{handleCardClick(card)}}/>
         ))}
 
         {/* 答對框 */}
@@ -371,7 +381,7 @@ const MemoryCardsPage = ({bgmAudio, navigateTo, players, setPlayers, backgroundI
           )
         }
       </CardsContainerGrid>
-      {pageAssetsInStage3.map((asset) => (
+      {!matchFrameVisible && pageAssetsInStage3.map((asset) => (
         <div key={asset.RawId || asset.id} style={asset.style}>
             {asset.Type === 'Text' ? 
             (

@@ -34,7 +34,7 @@ const ScoresPage = ({ players,setPlayers,bgmAudio, navigateTo, backgroundImage }
     if(bgmAudio && !bgmAudio.paused){
       bgmAudio.pause();
     }
-    const audioPlayer =new Audio(modeSounds.congrats || './sounds/congrats.mp3');
+    const audioPlayer =new Audio(modeSounds.congrats || '../../public/sounds//congrat.mp3');
     audioPlayer.volume=0.316;
     audioPlayer.play().catch((error)=>{console.log("Audio failed",error)});
   }, []);

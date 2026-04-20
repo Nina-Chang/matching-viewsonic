@@ -1,5 +1,5 @@
 import './App.css';
-import { useState, useLayoutEffect,useEffect, useRef,useMemo} from 'react';
+import { useState, useLayoutEffect,useEffect, useRef,useCallback} from 'react';
 import StartPage from './pages/StartPage';
 import InstructionsPage from './pages/InstructionsPage';
 import MatchingCardsPage from './pages/MatchingCardsPage';
@@ -26,7 +26,9 @@ function App() {
   const [players, setPlayers] = useState(modePlayers || []);
   const [scale, setScale] = useState(1);
   const audioRef=useRef(null)
-  const navigateTo = (pageName) => setPage(pageName);
+  const navigateTo = useCallback((pageName) => {
+    setPage(pageName);
+  }, []);
 
   const gameStyle = { 
     transform: `scale(${scale})`,
@@ -43,6 +45,12 @@ function App() {
     }
     navigateTo('instructions')
   }
+
+  useEffect(()=>{
+    setPlayers((pre) => 
+      pre.map((player) => player.id === 1 ? { ...player, status: true } : player)
+    );
+  },[])
 
   useEffect(() => {
     const startAudioContext = () => {
@@ -96,8 +104,16 @@ function App() {
         {page === 'instructions' && (<InstructionsPage navigateTo={navigateTo} backgroundImage={backgroundImages.instructions}/>)}
         {/* 場景3 */}
         {/* 場景4-Match Success */}
-        {(page === 'cards'&&gameMode==="matching") && (<MatchingCardsPage bgmAudio={audioRef.current} navigateTo={navigateTo} players={players} setPlayers={setPlayers} backgroundImage={backgroundImages.cards}/>)}
-        {(page === 'cards'&&gameMode==="memory") && (<MemoryCardsPage bgmAudio={audioRef.current} navigateTo={navigateTo} players={players} setPlayers={setPlayers} backgroundImage={backgroundImages.cards}/>)}
+        {page === 'cards' && gameMode && (
+          <>
+            {gameMode === "matching" && (
+              <MatchingCardsPage bgmAudio={audioRef.current} navigateTo={navigateTo} players={players} setPlayers={setPlayers} backgroundImage={backgroundImages.cards}/>
+            )}
+            {gameMode === "memory" && (
+              <MemoryCardsPage bgmAudio={audioRef.current} navigateTo={navigateTo} players={players} setPlayers={setPlayers} backgroundImage={backgroundImages.cards}/>
+            )}
+          </>
+        )}
         {/* 場景5 */}
         {page === 'scores' && (<ScoresPage players={players} setPlayers={setPlayers} bgmAudio={audioRef.current} navigateTo={navigateTo} backgroundImage={backgroundImages.scores}/>)}
       </div>

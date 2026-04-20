@@ -8,22 +8,22 @@ const CardFrame = styled.div`
   align-items: center;
   transform-origin: center;
 
-  ${({ pairCount }) => {
-    if (pairCount >= 13) {
+  ${({ paircount }) => {
+    if (paircount >= 13) {
       return `
         transform: scale(0.8);
         width: 135%;
         height: 135%;
         margin-top: -24px;
         margin-left: -20px;
-        ${pairCount === 13 ? '&:nth-child(22) { grid-column-start: 2; }' : ''}
-        ${pairCount === 15 ? '&:nth-child(25) { grid-column-start: 2; }' : ''}
-        ${pairCount === 17 ? '&:nth-child(28) { grid-column-start: 2; }' : ''}
-        ${pairCount === 19 ? '&:nth-child(31) { grid-column-start: 2; }' : ''}
+        ${paircount === 13 ? '&:nth-child(22) { grid-column-start: 2; }' : ''}
+        ${paircount === 15 ? '&:nth-child(25) { grid-column-start: 2; }' : ''}
+        ${paircount === 17 ? '&:nth-child(28) { grid-column-start: 2; }' : ''}
+        ${paircount === 19 ? '&:nth-child(31) { grid-column-start: 2; }' : ''}
       `;
     }
     
-    if (pairCount === 10) {
+    if (paircount === 10) {
       return `
         width: 100%;
         height: 100%;
@@ -31,7 +31,7 @@ const CardFrame = styled.div`
       `;
     }
     
-    if (pairCount === 11) {
+    if (paircount === 11) {
       return `
         width: 100%;
         height: 100%;
@@ -48,7 +48,7 @@ const CardFrame = styled.div`
 
 export const SingleCard = React.memo(({card,pairCount,cardDisabled,flipped,handleClick}) => {
   return (
-    <CardFrame key={card?.id} pairCount={pairCount} style={{visibility:card?.disabled&&card?.disabled===true ? 'hidden' : 'visible',cursor:cardDisabled?'auto':'pointer'}} onClick={handleClick}>
+    <CardFrame paircount={pairCount} style={{visibility:card?.disabled&&card?.disabled===true ? 'hidden' : 'visible',cursor:cardDisabled?'auto':'pointer'}} onClick={handleClick}>
         <div className={flipped ? "flipped":""}>
             {/* 卡片正面 */}
             <div className="front">
