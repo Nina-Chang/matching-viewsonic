@@ -40,6 +40,13 @@ const StartPage = ({ onStartGame, backgroundImage }) => {
         <img src={modeImages?.btnStart || 'images/start.png'} alt="Start Game" />
         <span className="start-button-text">Start</span>
       </button>
+      {
+        cfg.isSubscribe===0
+        &&
+        <div className='logo-gray'>
+          <img src="./images/object/logo-gray.png" alt="logo" ></img>
+        </div>
+      }
       {pageAssets.map((asset) => (
         <div key={asset.RawId || asset.id} style={asset.style}>
             {asset.Type === 'Text' ? 

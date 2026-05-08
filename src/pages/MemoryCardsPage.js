@@ -381,6 +381,13 @@ const MemoryCardsPage = ({bgmAudio, navigateTo, players, setPlayers, backgroundI
           )
         }
       </CardsContainerGrid>
+      {
+        cfg.isSubscribe===0
+        &&
+        <div className='logo-gray'>
+          <img src="./images/object/logo-gray.png" alt="logo" ></img>
+        </div>
+      }
       {!matchFrameVisible && pageAssetsInStage3.map((asset) => (
         <div key={asset.RawId || asset.id} style={asset.style}>
             {asset.Type === 'Text' ? 
