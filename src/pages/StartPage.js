@@ -41,7 +41,7 @@ const StartPage = ({ onStartGame, backgroundImage }) => {
         <span className="start-button-text">Start</span>
       </button>
       {
-        cfg.isSubscribe===0
+        cfg.settings.isSubscribe===0
         &&
         <div className='logo-gray'>
           <img src="./images/object/logo-gray.png" alt="logo" ></img>
