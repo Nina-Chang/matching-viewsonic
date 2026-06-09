@@ -8,6 +8,7 @@ const cfg = (typeof window !== 'undefined' && window.gameConfig) ? window.gameCo
 
 const modeImages = cfg?.images || {};
 const modeAssets = cfg?.assets || [];
+const modeThemeColor = cfg?.themeForegroundColor || "";
 
 const InstructionsPage = ({ navigateTo, backgroundImage }) => {
   const { buttonScale,setScale, handleClickAnimation }=useClickAnimation(()=>navigateTo('cards'))
@@ -28,8 +29,8 @@ const InstructionsPage = ({ navigateTo, backgroundImage }) => {
 
   return (
     <div className="page-container" style={pageStyle}>
-      <span className="sticker-text">How to play</span>
-      <div className="instructions-text">
+      <span className="sticker-text" style={{ color: modeThemeColor }}>How to play</span>
+      <div className="instructions-text" style={{color:`${modeThemeColor}`}}>
         <p>1. Players take turns matching two cards.</p>
         <p>2. Earn 1 point for each matching pair.</p>
         <p>3. Player with the most points wins.</p>

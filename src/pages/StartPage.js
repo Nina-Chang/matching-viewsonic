@@ -8,6 +8,7 @@ const cfg = (typeof window !== 'undefined' && window.gameConfig) ? window.gameCo
 const modeImages = cfg?.images || {};
 const modeStrings = cfg?.strings || {};
 const modeAssets = cfg?.assets || [];
+const modeThemeColor = cfg?.themeForegroundColor || "";
 
 const StartPage = ({ onStartGame, backgroundImage }) => {
   const { buttonScale,setScale, handleClickAnimation }=useClickAnimation(onStartGame)
@@ -28,7 +29,7 @@ const StartPage = ({ onStartGame, backgroundImage }) => {
 
   return (
     <div className="page-container start-page" style={pageStyle}>
-      <div style={modeStrings.startTitle.style} className='start-page-title'>
+      <div style={{color:`${modeThemeColor}`,...modeStrings.startTitle.style}} className='start-page-title'>
         {modeStrings.startTitle.text}
       </div>
       <button 
@@ -38,7 +39,7 @@ const StartPage = ({ onStartGame, backgroundImage }) => {
       style={{transform: `translate(-50%, -50%) scale(${buttonScale.start})`}}
       onClick={()=>{handleClickAnimation("start")}}>
         <img src={modeImages?.btnStart || 'images/start.png'} alt="Start Game" />
-        <span className="start-button-text">Start</span>
+        <span className="start-button-text" style={{color:`${modeThemeColor}`}}>Start</span>
       </button>
       {
         cfg.settings.isSubscribe===false

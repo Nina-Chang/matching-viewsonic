@@ -10,6 +10,7 @@ const cfg = (typeof window !== 'undefined' && window.gameConfig) ? window.gameCo
 const modeSound = cfg?.sounds || {};
 const modeAssets = cfg?.assets || [];
 const modeQuestions = cfg?.questions || [];
+const modeThemeColor = cfg?.themeForegroundColor || "";
 
 const CardsContainerGrid = styled.div`
   width: 1655px;
@@ -329,7 +330,7 @@ const MemoryCardsPage = ({bgmAudio, navigateTo, players, setPlayers, backgroundI
             <div key={player.id || index} className="player-content">
               <img className="player-arrow" style={{visibility: player.status ? 'visible' : 'hidden'}} width={33} height={23} src={"./images/object/doodle_memory_arrow.png"} alt="Arrow" />
               <img className="player-frame" src={player.frame || `./images/object/doodle_memory_score_finch_0${index+1}.png`} alt="Game Frame" />
-              <span className="player-score-text">{player.score || 0}</span>
+              <span className="player-score-text" style={{color:`${modeThemeColor}`}}>{player.score || 0}</span>
             </div>
           ))
         }
@@ -365,7 +366,7 @@ const MemoryCardsPage = ({bgmAudio, navigateTo, players, setPlayers, backgroundI
                   }
                 </div>
               </div>
-              <div className="matching-answer-text">Great!</div> 
+              <div className="matching-answer-text" style={{color:`${modeThemeColor}`}}>Great!</div> 
               <button className="image-button next-button" 
               onMouseEnter={() => setScale("next",1.1)}
               onMouseLeave={() => setScale("next",1)}
@@ -374,7 +375,7 @@ const MemoryCardsPage = ({bgmAudio, navigateTo, players, setPlayers, backgroundI
                 <img 
                 src={"./images/object/doodle_memory_next_button02.png"}
                 alt="question" />
-                <span className="next-button-text">Next</span>
+                <span className="next-button-text" style={{color:`${modeThemeColor}`}}>Next</span>
               </button>
             </div>
           </div>

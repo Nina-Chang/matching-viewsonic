@@ -9,6 +9,7 @@ const modeStrings = cfg?.strings || {};
 const modePlayers = cfg?.players || [];
 const modeSounds = cfg?.sounds || {};
 const modeAssets = cfg?.assets || [];
+const modeThemeColor = cfg?.themeForegroundColor || "";
 
 const ScoresPage = ({ players,setPlayers,bgmAudio, navigateTo, backgroundImage }) => {
   const { buttonScale,setScale, handleClickAnimation }=useClickAnimation((key) => handleAfterClickingButton(key))
@@ -48,7 +49,7 @@ const ScoresPage = ({ players,setPlayers,bgmAudio, navigateTo, backgroundImage }
   return (
     <div className="page-container" style={pageStyle}>
       <img className="scores-frame" src={'images/object/doodle_matching_result_frame.png'} alt="Result Frame" />
-      <div style={modeStrings.scoresTitle.style} className="scores-title">
+      <div style={{color:`${modeThemeColor}`,...modeStrings.scoresTitle.style}} className="scores-title">
         {modeStrings.scoresTitle.text}
       </div>
       <ol className="scores-list">
@@ -61,7 +62,7 @@ const ScoresPage = ({ players,setPlayers,bgmAudio, navigateTo, backgroundImage }
               <img src={playerImgSrc} alt={player.name} />
               
               <img className="score-item-frame" src={"images/object/doodle_matching_point_frame.png"} alt={"point frame"} />
-              <span>{player.score}</span>
+              <span style={{color:`${modeThemeColor}`}}>{player.score}</span>
               
               {sortedPlayers[0].score === player.score && player.score !== 0 && (
                 <img className='trophy-img' src={modeImages?.trophy || 'images/stage_jeopardy_trophy.png'} alt='Champion' />
