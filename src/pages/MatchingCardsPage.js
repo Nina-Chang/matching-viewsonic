@@ -9,7 +9,7 @@ const cfg = (typeof window !== 'undefined' && window.gameConfig) ? window.gameCo
 const modeSound = cfg?.sounds || {};
 const modeAssets = cfg?.assets || [];
 const modeQuestions = cfg?.questions || [];
-const modeThemeColor = cfg?.themeForegroundColor || "";
+const modeThemeColor = cfg?.settings.themeForegroundColor || "";
 
 const CardsContainerGrid = styled.div`
   width: 1655px;
